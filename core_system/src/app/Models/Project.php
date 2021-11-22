@@ -21,12 +21,10 @@ class Project extends Model
      */
     protected $fillable = ['name', 'subject_id', 'repository_id'];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function subjects(): \Illuminate\Database\Eloquent\Relations\HasMany
+
+    public function subject()
     {
-        return $this->hasMany(Subject::class);
+        return $this->belongsTo(Subject::class);
     }
 
     /**
@@ -53,6 +51,6 @@ class Project extends Model
      */
     public function getNameAttribute($value): string
     {
-        return mb_convert_case(strtolower($value));
+        return ucwords(mb_convert_case($value, MB_CASE_TITLE));
     }
 }

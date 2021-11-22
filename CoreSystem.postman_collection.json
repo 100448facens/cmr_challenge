@@ -1,0 +1,186 @@
+{
+	"info": {
+		"_postman_id": "6207508d-04da-49dd-92d7-06467eebc570",
+		"name": "CoreSystem",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "getRepositories",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/API/v1/repositories/",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"API",
+						"v1",
+						"repositories",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getSubjectsByRepository",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/API/v1/repositories/1/subjects/",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"API",
+						"v1",
+						"repositories",
+						"1",
+						"subjects",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getProjectsByRepository",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/API/v1/repositories/1/projects",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"API",
+						"v1",
+						"repositories",
+						"1",
+						"projects"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createSubjectToRepository",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"A nice project 1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/API/v1/repositories/3/subjects",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"API",
+						"v1",
+						"repositories",
+						"3",
+						"subjects"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Subject31",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "assignProjectToSubject",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/API/v1/repositories/1/projects/1/subjects/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"API",
+						"v1",
+						"repositories",
+						"1",
+						"projects",
+						"1",
+						"subjects",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getSubjectsByProjectAtRepository",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/API/v1/repositories/1/projects/1/subjects",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"API",
+						"v1",
+						"repositories",
+						"1",
+						"projects",
+						"1",
+						"subjects"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getProjectsBySubjectsAtRepository",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/API/v1/repositories/1/subjects/3/projects",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"API",
+						"v1",
+						"repositories",
+						"1",
+						"subjects",
+						"3",
+						"projects"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

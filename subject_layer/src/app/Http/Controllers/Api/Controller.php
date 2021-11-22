@@ -39,7 +39,7 @@ class Controller
 
      *
      * @OA\Tag(
-     *     name="Projects",
+     *     name="Subjects",
      *     description="API Endpoints of Subjects Layer"
      * )
      */

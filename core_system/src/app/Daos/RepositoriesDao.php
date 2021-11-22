@@ -29,16 +29,4 @@ class RepositoriesDao
     {
         return Repository::all();
     }
-
-    /**
-     * @param $id
-     *
-     * @return mixed
-     */
-    public function allByRepository($id)
-    {
-        return Subject::whereHas('repository', function ($query) use ($id) {
-            $query->id = $id;
-        })->get();
-    }
 }

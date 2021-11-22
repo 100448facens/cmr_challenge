@@ -115,6 +115,7 @@ services:
     entrypoint: [ 'php', '/var/www/html/artisan' ]
     networks:
       - laravel
+      - core_system_app-shared
 
   mailhog:
     image: mailhog/mailhog:latest

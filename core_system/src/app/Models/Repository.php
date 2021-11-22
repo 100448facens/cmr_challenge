@@ -19,17 +19,17 @@ class Repository extends Model
     protected $fillable = ['name'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return mixed
      */
-    public function subject(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function subjects()
     {
-        return $this->hasOne(Repository::class);
+        return $this->hasMany(Subject::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return mixed
      */
-    public function projects(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function projects()
     {
         return $this->hasMany(Project::class);
     }
@@ -50,7 +50,6 @@ class Repository extends Model
      */
     public function getNameAttribute($value): string
     {
-        return mb_convert_case(strtolower($value));
-//        return mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
+        return ucwords(mb_convert_case($value, MB_CASE_TITLE));
     }
 }

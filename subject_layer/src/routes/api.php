@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use \App\Http\Controllers\Api\SubjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,14 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::group(['prefix' => 'repositories'], function () {
 
-Route::get('/remote-users', [\App\Http\Controllers\UserController::class, 'getRemoteUsers']);
+    Route::get('/{repositoryID}/subjects', [SubjectController::class, 'index'])->name('repository.subjects');
 
-Route::group(['prefix' => 'subject'], function() {
+    Route::get('/{repositoryID}/projects/{projectID}/subjects', [SubjectController::class, 'showSubjects'])->name('repository.projects.subjects');
 
-    Route::put('store', [\App\Http\Controllers\API\SubjectController::class, 'store'])->name('subject.store');
+    Route::post('/{repositoryID}/subjects', [SubjectController::class, 'store'])->name('repository.subjects.create');
 
+    Route::post('/{repositoryID}/projects/{projectID}/subjects/{subjectID}', [SubjectController::class, 'update'])->name('repository.subjects.store');
 });

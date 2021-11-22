@@ -1,0 +1,107 @@
+{
+	"info": {
+		"_postman_id": "3fe429c8-00c7-4ea8-bbbe-53929ff496ae",
+		"name": "SubjectLayer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "createSubjectToRepository",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Literatura\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/repositories/3/subjects",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"repositories",
+						"3",
+						"subjects"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "assignProjectToSubject",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/repositories/1/projects/1/subjects/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"repositories",
+						"1",
+						"projects",
+						"1",
+						"subjects",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getSubjectsByRepository",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/repositories/3/subjects",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"repositories",
+						"3",
+						"subjects"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getSubjectsByProjectAtRepository",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/repositories/1/projects/1/subjects",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"repositories",
+						"1",
+						"projects",
+						"1",
+						"subjects"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -15,22 +15,19 @@ class Subject extends Model
      * fillable fields
      * @var array
      */
-    protected $fillable = ['name'];
+    protected $fillable = ['name','repository_id'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return mixed
      */
-    public function repository(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function repository()
     {
-        return $this->belongsTo(Repository::class);
+        return $this->hasOne(Repository::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function projects(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function projects()
     {
-        return $this->belongsToMany(Project::class);
+        return $this->hasMany(Project::class);
     }
 
     /**
@@ -49,7 +46,6 @@ class Subject extends Model
      */
     public function getNameAttribute($value): string
     {
-        return mb_convert_case(strtolower($value));
-//        return mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
+        return ucwords(mb_convert_case($value, MB_CASE_TITLE));
     }
 }

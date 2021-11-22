@@ -5,46 +5,57 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class SubjectController extends Controller
 {
     /**
      * @OA\Get(
-     *      path="/subject",
+     *      path="/repositories/{repositoryID}/subjects",
      *      operationId="getSubjectList",
      *      tags={"Subject"},
      *      summary="Get list of subjects",
      *      description="Returns list of subjects",
+     *      @OA\Parameter(
+     *          name="repositoryID",
+     *          description="Repository id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
      *          @OA\JsonContent(ref="#/components/schemas/SubjectResource")
      *       ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      )
      *     )
      */
-    public function index()
+    public function index($repositoryID)
     {
-        $repoID = 1;
-        $response = Http::get(env('CORE_API_HOST') . '/repositories/' . $repoID . '/subjects');
+        $route = env('CORE_API_HOST') . '/repositories/' . $repositoryID . '/subjects';
+        $response = Http::get($route);
 
         return $response->json();
     }
 
     /**
      * @OA\Post(
-     *      path="/subject/store",
+     *      path="/repositories/{repositoryID}/subjects",
      *      operationId="storeSubject",
      *      tags={"Subject"},
-     *      summary="Store new subject",
+     *      summary="Create new subject",
      *      description="Returns subject data",
+     *      @OA\Parameter(
+     *          name="repositoryID",
+     *          description="Repository id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\JsonContent(ref="#/components/schemas/StoreSubjectRequest")
@@ -58,83 +69,49 @@ class SubjectController extends Controller
      *          response=400,
      *          description="Bad Request"
      *      ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      )
      * )
      */
-    public function store(Request $request): array
+    public function store(Request $request, $repositoryID)
     {
-        $repoID = $request->get('repository');
-        $response = Http::put(env('CORE_API_HOST') . '/repositories/' . $repoID . '/subjects', $request->all());
+        Log::info($request->all());
+        $response = Http::post(env('CORE_API_HOST') . '/repositories/' . $repositoryID . '/subjects', $request->all());
 
         return $response->json();
     }
 
     /**
-     * @OA\Get(
-     *      path="/subject/{id}",
-     *      operationId="getSubjectById",
+     * @OA\Post(
+     *      path="/repositories/{repositoryID}/projects/{projectID}/subjects/{subjectID}",
+     *      operationId="assignProjectToSubject",
      *      tags={"Subject"},
-     *      summary="Get subject information",
-     *      description="Returns subject data",
-     *      @OA\Parameter(
-     *          name="id",
-     *          description="Subject id",
-     *          required=true,
-     *          in="path",
-     *          @OA\Schema(
-     *              type="integer"
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *          @OA\JsonContent(ref="#/components/schemas/Subject")
-     *       ),
-     *      @OA\Response(
-     *          response=400,
-     *          description="Bad Request"
-     *      ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      )
-     * )
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * @OA\Put(
-     *      path="/subject/{id}",
-     *      operationId="updateSubject",
-     *      tags={"Subject"},
-     *      summary="Update existing subject",
+     *      summary="Assign a Project to Subject",
      *      description="Returns updated subject data",
      *      @OA\Parameter(
-     *          name="id",
-     *          description="Subject id",
+     *          name="repositoryID",
+     *          description="Repository id",
      *          required=true,
      *          in="path",
      *          @OA\Schema(
      *              type="integer"
      *          )
      *      ),
-     *      @OA\RequestBody(
+     *      @OA\Parameter(
+     *          name="projectID",
+     *          description="Project id",
      *          required=true,
-     *          @OA\JsonContent(ref="#/components/schemas/UpdateSubjectRequest")
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="subjectID",
+     *          description="New Subject id to assigne at Project",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
      *      ),
      *      @OA\Response(
      *          response=202,
@@ -158,25 +135,40 @@ class SubjectController extends Controller
      *          description="Resource Not Found"
      *      )
      * )
+     *
+     * @param $repositoryID
+     * @param $projectID
+     * @param $subjectID
+     * @return array|mixed
      */
-    public function update(Request $request, int $id): array
+    public function update($repositoryID, $projectID, $subjectID)
     {
-        $repoID = 1;
-        $response = Http::post(env('CORE_API_HOST') . '/repositories/' . $repoID . '/subjects/' . $id, $request->data());
+        $route = env('CORE_API_HOST') . '/' . $repositoryID . '/projects/' . $projectID . '/subjects/' . $subjectID;
+        $response = Http::post($route);
 
         return $response->json();
     }
 
+
     /**
-     * @OA\Delete(
-     *      path="/subject/{id}",
-     *      operationId="deleteSubject",
-     *      tags={"ProjectSubject"},
-     *      summary="Delete existing subject",
-     *      description="Deletes a record and returns no content",
+     * @OA\Get(
+     *      path="/repositories/{repositoryID}/projects/{projectID}/subjects",
+     *      operationId="listSubjectByProject",
+     *      tags={"Subject"},
+     *      summary="List subject by project at repository",
+     *      description="Returns subject data",
      *      @OA\Parameter(
-     *          name="id",
-     *          description="Subject id",
+     *          name="repositoryID",
+     *          description="Repository id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="projectID",
+     *          description="Project id",
      *          required=true,
      *          in="path",
      *          @OA\Schema(
@@ -184,28 +176,20 @@ class SubjectController extends Controller
      *          )
      *      ),
      *      @OA\Response(
-     *          response=204,
+     *          response=200,
      *          description="Successful operation",
-     *          @OA\JsonContent()
+     *          @OA\JsonContent(ref="#/components/schemas/SubjectResource")
      *       ),
      *      @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
+     *          response=400,
+     *          description="Bad Request"
      *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      ),
-     *      @OA\Response(
-     *          response=404,
-     *          description="Resource Not Found"
-     *      )
      * )
      */
-    public function destroy(int $id): array
+    public function showSubjects($repositoryID, $projectID)
     {
-        $repoID = 1;
-        $response = Http::delete(env('CORE_API_HOST') . '/repositories/' . $repoID . '/subjects/' . $id);
+        $route = env('CORE_API_HOST') . ' / repositories / ' . $repositoryID . ' / projects / ' . $projectID . ' / subjects';
+        $response = Http::get($route);
 
         return $response->json();
     }

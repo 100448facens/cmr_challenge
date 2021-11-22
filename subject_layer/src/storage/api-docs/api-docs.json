@@ -14,12 +14,12 @@
     },
     "servers": [
         {
-            "url": "http://localhost:8080/api/v1",
+            "url": "http://localhost:8080/api",
             "description": "Demo API Server"
         }
     ],
     "paths": {
-        "/subject": {
+        "/repositories/{repositoryID}/subjects": {
             "get": {
                 "tags": [
                     "Subject"
@@ -27,6 +27,17 @@
                 "summary": "Get list of subjects",
                 "description": "Returns list of subjects",
                 "operationId": "getSubjectList",
+                "parameters": [
+                    {
+                        "name": "repositoryID",
+                        "in": "path",
+                        "description": "Repository id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful operation",
@@ -37,24 +48,27 @@
                                 }
                             }
                         }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
                     }
                 }
-            }
-        },
-        "/subject/store": {
+            },
             "post": {
                 "tags": [
                     "Subject"
                 ],
-                "summary": "Store new subject",
+                "summary": "Create new subject",
                 "description": "Returns subject data",
                 "operationId": "storeSubject",
+                "parameters": [
+                    {
+                        "name": "repositoryID",
+                        "in": "path",
+                        "description": "Repository id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -78,85 +92,47 @@
                     },
                     "400": {
                         "description": "Bad Request"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
                     }
                 }
             }
         },
-        "/subject/{id}": {
-            "get": {
+        "/repositories/{repositoryID}/projects/{projectID}/subjects/{subjectID}": {
+            "post": {
                 "tags": [
                     "Subject"
                 ],
-                "summary": "Get subject information",
-                "description": "Returns subject data",
-                "operationId": "getSubjectById",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Subject id",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Subject"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "Subject"
-                ],
-                "summary": "Update existing subject",
+                "summary": "Assign a Project to Subject",
                 "description": "Returns updated subject data",
-                "operationId": "updateSubject",
+                "operationId": "assignProjectToSubject",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "repositoryID",
                         "in": "path",
-                        "description": "Subject id",
+                        "description": "Repository id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "projectID",
+                        "in": "path",
+                        "description": "Project id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "subjectID",
+                        "in": "path",
+                        "description": "New Subject id to assigne at Project",
                         "required": true,
                         "schema": {
                             "type": "integer"
                         }
                     }
                 ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdateSubjectRequest"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "202": {
                         "description": "Successful operation",
@@ -181,19 +157,30 @@
                         "description": "Resource Not Found"
                     }
                 }
-            },
-            "delete": {
+            }
+        },
+        "/repositories/{repositoryID}/projects/{projectID}/subjects": {
+            "get": {
                 "tags": [
-                    "ProjectSubject"
+                    "Subject"
                 ],
-                "summary": "Delete existing subject",
-                "description": "Deletes a record and returns no content",
-                "operationId": "deleteSubject",
+                "summary": "List subject by project at repository",
+                "description": "Returns subject data",
+                "operationId": "listSubjectByProject",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "repositoryID",
                         "in": "path",
-                        "description": "Subject id",
+                        "description": "Repository id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "projectID",
+                        "in": "path",
+                        "description": "Project id",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -201,22 +188,18 @@
                     }
                 ],
                 "responses": {
-                    "204": {
+                    "200": {
                         "description": "Successful operation",
                         "content": {
                             "application/json": {
-                                "schema": {}
+                                "schema": {
+                                    "$ref": "#/components/schemas/SubjectResource"
+                                }
                             }
                         }
                     },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    },
-                    "404": {
-                        "description": "Resource Not Found"
+                    "400": {
+                        "description": "Bad Request"
                     }
                 }
             }
@@ -322,7 +305,7 @@
     },
     "tags": [
         {
-            "name": "Projects",
+            "name": "Subjects",
             "description": "API Endpoints of Subjects Layer"
         }
     ],
