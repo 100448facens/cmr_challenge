@@ -1,8 +1,5 @@
 # Challenge Collective Minds
 
-Both projects are developed with Laravel 8
-
-
 ## Usage
 
 **System server at:**
@@ -11,14 +8,26 @@ Both projects are developed with Laravel 8
 
 `subject layer: localhost: 8080`
 
+**Each docker container run services at:**
+
+- **nginx** - `:80`
+- **mysql** - `:3306`
+- **php** - `:9000`
+- **redis** - `:6379`
+- **mailhog** - `:8025`
+
 To start docker containers:
 
+
 **Docker container Core:**
+
 ```
 ~ cd core_system
 ~ docker-compose up -d --build
 ~ docker-compose run artisan migrate:refresh --seed
 ```
+
+The file with the initial data migration is located at: `database\seeders\MockDataSeeder` 
 
 **Docker container subject layer:**
 
